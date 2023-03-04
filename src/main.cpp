@@ -1,5 +1,5 @@
-#include "fmt/core.h"
-#include "nlohmann/json.hpp"
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 
@@ -26,7 +26,7 @@ int main()
   example["size"] = number_of_elements;
   fmt::print("Updated \"size\": {}\n", example["size"].dump(2));
 
-  std::ofstream out_file{"../updated.json"};
+  std::ofstream out_file{"../result.json"};
   out_file << example.dump(2);
 
   return 0;
