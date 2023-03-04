@@ -1,37 +1,36 @@
 cmake_minimum_required(VERSION 3.19)
-project(json_cpp)
-
-add_executable(${PROJECT_NAME}
-    src/main.cpp)
+project(json_cpp
+  VERSION "0.1.0"
+  DESCRIPTION "json c++ with nlohmann and fmt"
+  LANGUAGES CXX
+  )
 
 set(PROJECT_OPTIONS
-    -O3
-    -Wpedantic
-    -Wall
-    -Wextra
-    -Werror
-    )
+  -Wpedantic
+  -Wall
+  -Wextra
+  -Werror
+)
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+
 target_compile_options(${PROJECT_NAME} INTERFACE ${PROJECT_OPTIONS})
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-#target_include_directories(${PROJECT_NAME} PRIVATE include)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+
 
 # -- Find third-party libs --
-#include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-#conan_basic_setup(TARGETS)
-#message(" - Conan libs: ${CONAN_LIBS}")
 set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR} ${CMAKE_MODULE_PATH})
 set(CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR} ${CMAKE_PREFIX_PATH})
 find_package(fmt REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
-if (fmt_FOUND)
-  message("fmt found")
-else()
-  message("NOT found")
-endif ()
 
 target_link_libraries(${PROJECT_NAME}
+  PRIVATE
+    ${fmt_LIBRARIES}
     pthread
-    fmt::fmt
-    nlohmann_json::nlohmann_json
-    )
+)
+target_include_directories(${PROJECT_NAME}
+  PRIVATE
+    ${nlohmann_json_INCLUDE_DIRS}
+)
